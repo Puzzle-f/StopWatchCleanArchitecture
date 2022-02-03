@@ -1,5 +1,6 @@
 package com.example.stopwatchcleanarchitecture.state
 
+import com.example.stopwatchcleanarchitecture.calculation.ElapsedTimeCalculator
 import com.example.stopwatchcleanarchitecture.formatter.TimestampMillisecondsFormatter
 
 class StopwatchStateHolder(

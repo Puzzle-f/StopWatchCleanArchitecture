@@ -1,7 +1,9 @@
-package com.example.stopwatchcleanarchitecture.state
+package com.example.stopwatchcleanarchitecture.calculation
+
+import com.example.stopwatchcleanarchitecture.state.StopwatchState
 
 class ElapsedTimeCalculator(
-    private val timestampProvider: TimestampProvider,
+    private val timestampProvider: TimestampProvider
 ) {
 
     fun calculate(state: StopwatchState.Running): Long {
@@ -9,7 +11,7 @@ class ElapsedTimeCalculator(
         val timePassedSinceStart = if (currentTimestamp > state.startTime) {
             currentTimestamp - state.startTime
         } else {
-            0
+            state.startTime
         }
         return timePassedSinceStart + state.elapsedTime
     }

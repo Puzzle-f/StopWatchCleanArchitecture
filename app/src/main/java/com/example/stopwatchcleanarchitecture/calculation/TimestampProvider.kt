@@ -1,4 +1,4 @@
-package com.example.stopwatchcleanarchitecture.state
+package com.example.stopwatchcleanarchitecture.calculation
 
 
 interface TimestampProvider {

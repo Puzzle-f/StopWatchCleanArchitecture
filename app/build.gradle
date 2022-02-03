@@ -65,5 +65,11 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.4.3"
+//  Koin
+    implementation 'org.koin:koin-android:2.0.1'
+    implementation 'org.koin:koin-android-viewmodel:2.0.1'
+
+
+//    implementation "com.github.kirich1409:1.4.6"
 
 }
