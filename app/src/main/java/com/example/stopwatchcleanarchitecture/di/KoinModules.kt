@@ -10,32 +10,34 @@ import com.example.stopwatchcleanarchitecture.viewmodel.StopwatchViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val myViewModel = module {
 
-        factory {
-            StopwatchViewModel(
-                stopwatchStateHolder = get(),
-                scope = get()
-            )
-        }
+    factory {
+        StopwatchViewModel(
+            stopwatchStateHolder = get(),
+            scope = get()
+        )
+    }
 
 
-    single<TimestampProvider>{
+    single<TimestampProvider> {
         timestampProvider
     }
 
     single {
-        StopwatchStateHolder(stopwatchStateCalculator = get(),
-                            elapsedTimeCalculator = get(),
-                            timestampMillisecondsFormatter = get())
+        StopwatchStateHolder(
+            stopwatchStateCalculator = get(),
+            elapsedTimeCalculator = get(),
+            timestampMillisecondsFormatter = get()
+        )
     }
 
     single {
-        StopwatchStateCalculator(timestampProvider = get(),
-                                 elapsedTimeCalculator = get()
+        StopwatchStateCalculator(
+            timestampProvider = get(),
+            elapsedTimeCalculator = get()
         )
     }
 
@@ -47,10 +49,10 @@ val myViewModel = module {
         TimestampMillisecondsFormatter()
     }
 
-    single <CoroutineScope> {
+    single<CoroutineScope> {
         CoroutineScope(
             Dispatchers.Main
-        + SupervisorJob()
+                    + SupervisorJob()
         )
     }
 }
