@@ -11,14 +11,17 @@ import kotlinx.coroutines.flow.StateFlow
 class StopwatchViewModel(
     private val stopwatchStateHolder: StopwatchStateHolder,
     private val scope: CoroutineScope,
-): ViewModel() {
+)
+    : ViewModel()
+{
 
     private var job: Job? = null
     private val mutableTicker = MutableStateFlow("")
     val ticker: StateFlow<String> = mutableTicker
 
     fun start() {
-        if (job == null) startJob()
+        if (job == null)
+            startJob()
         stopwatchStateHolder.start()
     }
 
@@ -42,7 +45,7 @@ class StopwatchViewModel(
         clearValue()
     }
 
-    private fun stopJob() {
+     fun stopJob() {
         scope.coroutineContext.cancelChildren()
         job = null
     }
