@@ -1,5 +1,8 @@
 package com.example.stopwatchcleanarchitecture.state
 
+import com.example.stopwatchcleanarchitecture.calculation.ElapsedTimeCalculator
+import com.example.stopwatchcleanarchitecture.calculation.TimestampProvider
+
 class StopwatchStateCalculator(
     private val timestampProvider: TimestampProvider,
     private val elapsedTimeCalculator: ElapsedTimeCalculator,
