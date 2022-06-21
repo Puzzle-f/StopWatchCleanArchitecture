@@ -1,67 +1,56 @@
 package com.example.stopwatchcleanarchitecture
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import com.example.stopwatchcleanarchitecture.calculation.ElapsedTimeCalculator
+import com.example.stopwatchcleanarchitecture.calculation.timestampProvider
 import com.example.stopwatchcleanarchitecture.formatter.TimestampMillisecondsFormatter
-import com.example.stopwatchcleanarchitecture.state.ElapsedTimeCalculator
 import com.example.stopwatchcleanarchitecture.state.StopwatchStateCalculator
 import com.example.stopwatchcleanarchitecture.state.StopwatchStateHolder
-import com.example.stopwatchcleanarchitecture.state.TimestampProvider
-import com.example.stopwatchcleanarchitecture.viewmodel.StopwatchListOrchestrator
+import com.example.stopwatchcleanarchitecture.viewmodel.StopwatchViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.observeOn
 import kotlinx.coroutines.launch
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private val timestampProvider = object : TimestampProvider {
-        override fun getMilliseconds(): Long {
-            return System.currentTimeMillis()
-        }
+    lateinit var stopwatchViewModel: StopwatchViewModel
+
+    private fun iniViewModel() {
+        val viewModel: StopwatchViewModel by viewModel()
+        stopwatchViewModel = viewModel
     }
-    private val stopwatchListOrchestrator = StopwatchListOrchestrator(
-        StopwatchStateHolder(
-            StopwatchStateCalculator(
-                timestampProvider,
-                ElapsedTimeCalculator(timestampProvider)
-            ),
-            ElapsedTimeCalculator(timestampProvider),
-            TimestampMillisecondsFormatter()
-        ),
-        CoroutineScope(
-            Dispatchers.Main
-                    + SupervisorJob()
-        )
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        iniViewModel()
         val textView = findViewById<TextView>(R.id.text_time)
         CoroutineScope(
             Dispatchers.Main
                     + SupervisorJob()
         ).launch {
-            stopwatchListOrchestrator
+            stopwatchViewModel
                 .ticker
-                .collect { data->
-                textView.text = data
-            }
+                .collect { data ->
+                    textView.text = data
+                }
         }
 
         findViewById<Button>(R.id.button_start).setOnClickListener {
-            stopwatchListOrchestrator.start()
+            stopwatchViewModel.start()
         }
         findViewById<Button>(R.id.button_pause).setOnClickListener {
-            stopwatchListOrchestrator.pause()
+            stopwatchViewModel.pause()
         }
         findViewById<Button>(R.id.button_stop).setOnClickListener {
-            stopwatchListOrchestrator.stop()
+            stopwatchViewModel.stop()
         }
 
     }

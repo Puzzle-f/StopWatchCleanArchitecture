@@ -1,14 +1,17 @@
 package com.example.stopwatchcleanarchitecture.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import com.example.stopwatchcleanarchitecture.formatter.TimestampMillisecondsFormatter.Companion.DEFAULT_TIME
 import com.example.stopwatchcleanarchitecture.state.StopwatchStateHolder
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-internal class StopwatchListOrchestrator(
+class StopwatchViewModel(
     private val stopwatchStateHolder: StopwatchStateHolder,
     private val scope: CoroutineScope,
-) {
+): ViewModel() {
 
     private var job: Job? = null
     private val mutableTicker = MutableStateFlow("")
@@ -20,7 +23,7 @@ internal class StopwatchListOrchestrator(
     }
 
     private fun startJob() {
-        scope.launch {
+        job = scope.launch {
             while (isActive) {
                 mutableTicker.value = stopwatchStateHolder.getStringTimeRepresentation()
                 delay(20)
@@ -45,6 +48,6 @@ internal class StopwatchListOrchestrator(
     }
 
     private fun clearValue() {
-        mutableTicker.value = "00:00:000"
+        mutableTicker.value = DEFAULT_TIME
     }
 }
